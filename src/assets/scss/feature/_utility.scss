@@ -1,0 +1,69 @@
+/** text-align */
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+
+$unit_map: (
+  xs: 2px,
+  sm: 4px,
+  md: 8px,
+  lg: 16px,
+  xl: 32px
+);
+
+@each $unit, $val in $unit_map {
+  /** gap */
+  .u-ga-#{$unit} {
+    gap: $val;
+  }
+
+  /** padding */
+  .u-pt-#{$unit} {
+    padding-top: $val;
+  }
+  .u-pb-#{$unit} {
+    padding-bottom: $val;
+  }
+  .u-pl-#{$unit} {
+    padding-left: $val;
+  }
+  .u-pr-#{$unit} {
+    padding-right: $val;
+  }
+  .u-px-#{$unit} {
+    padding-left: $val;
+    padding-right: $val;
+  }
+  .u-py-#{$unit} {
+    padding-top: $val;
+    padding-bottom: $val;
+  }
+
+  /** maring */
+  .u-mt-#{$unit} {
+    margin-top: $val;
+  }
+  .u-mb-#{$unit} {
+    margin-bottom: $val;
+  }
+  .u-ml-#{$unit} {
+    margin-left: $val;
+  }
+  .u-mr-#{$unit} {
+    margin-right: $val;
+  }
+  .u-mx-#{$unit} {
+    margin-left: $val;
+    margin-right: $val;
+  }
+  .u-my-#{$unit} {
+    margin-top: $val;
+    margin-bottom: $val;
+  }
+}

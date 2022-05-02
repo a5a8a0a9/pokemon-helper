@@ -1,32 +1,60 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div class="root-wrapper">
+    <div class="nav">
+      <router-link
+        v-for="(route, index) in routes"
+        :key="index"
+        :to="route.path"
+        class="link-item"
+      >
+        {{ route.name }}
+      </router-link>
     </div>
-    <router-view />
+    <div class="page-wrapper">
+      <router-view />
+    </div>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+import { routes } from '@/router/routes'
+export default {
+  data() {
+    return {
+      routes
     }
   }
+}
+</script>
+
+<style lang="scss">
+.root-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.nav {
+  height: 50px;
+  padding: 8px 16px;
+  background: #42b983;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  .link-item {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  a {
+    &.router-link-exact-active {
+      // color: #42b983;
+      color: #fff;
+    }
+  }
+}
+
+.page-wrapper {
+  height: calc(100% - 50px);
+  padding: 16px;
+  background: #eee;
 }
 </style>
