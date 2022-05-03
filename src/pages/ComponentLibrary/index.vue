@@ -14,12 +14,14 @@
           </div>
         </div>
       </div>
-      <div v-show="activeItem.id" class="right-side">
-        <div class="flex-row content-between">
-          <label class="title">{{ activeItem.name }}</label>
-          <button class="cls-btn" @click="toggleItem()">&times;</button>
+      <div class="right-side" :class="{ active: activeItem.id !== null }">
+        <div v-if="activeItem.id" class="flex-column h-100">
+          <div class="flex-row content-between u-mb-lg">
+            <label class="title">{{ activeItem.name }}</label>
+            <button class="cls-btn" @click="toggleItem()">&times;</button>
+          </div>
+          <component :is="activeItem.id" />
         </div>
-        <component :is="activeItem.id" />
       </div>
     </div>
   </div>
@@ -77,16 +79,17 @@ $primary: #42b983;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 30px;
   transition: 0.5s;
 
   &:hover {
     background: $primary;
     color: #fff;
+    transform: rotate(360deg);
   }
 }
 
@@ -98,14 +101,21 @@ $primary: #42b983;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-left: 3px solid $primary;
   padding: 8px;
+  width: 0;
+  transition: 0.5s;
+  border-left: 3px solid transparent;
+  &.active {
+    width: 50%;
+    border-left-color: $primary;
+  }
 }
 
 .item {
   &-wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    // grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 8px;
   }
 

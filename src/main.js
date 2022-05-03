@@ -4,8 +4,11 @@ import router from './router'
 import store from './store'
 import axios from './libs/axios'
 import '@/globalStyle'
+import GlobalComponents from '@/globalComponents'
 
+Vue.config.ignoredElements = [/^ion-/]
 Vue.config.productionTip = false
+Vue.use(GlobalComponents)
 
 new Vue({
   router,
