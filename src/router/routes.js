@@ -41,5 +41,15 @@ export const routes = [
       iconType: 'fa'
     },
     component: () => import('@/pages/Comic')
+  },
+  {
+    path: '/calculator',
+    name: '計算機',
+    meta: {
+      id: 'calculator',
+      icon: ['fas', 'calculator'],
+      iconType: 'fa'
+    },
+    component: () => import('@/pages/Calculator')
   }
 ]

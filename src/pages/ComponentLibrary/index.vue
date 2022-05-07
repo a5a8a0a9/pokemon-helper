@@ -29,15 +29,11 @@
 
 <script>
 import { list } from './Columns'
-import NavigationMenu from '@/components/NavigationMenu'
-import CircularNavigationMenu from '@/components/CircularNavigationMenu'
-import Clock from '@/components/Clock'
+import * as CustomComponent from '@/components/Custom'
 
 export default {
   components: {
-    NavigationMenu,
-    CircularNavigationMenu,
-    Clock
+    ...CustomComponent
   },
   data() {
     return {
@@ -119,35 +115,32 @@ $primary: #42b983;
     gap: 8px;
   }
 
-  height: 50px;
+  height: 40px;
   background: #fff;
-  padding: 8px 16px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 3px;
-  transition: 0.3s;
+  transition: 0.5s;
   cursor: pointer;
-  font-size: 16px;
   white-space: nowrap;
   word-break: keep-all;
   overflow: hidden;
   user-select: none;
 
   &.active {
-    transform: scale(1.02);
     background: darken($color: $primary, $amount: 5);
     color: #fff !important;
     border-color: $primary;
-    font-size: 18px;
   }
   &:hover {
-    transform: scale(1.02);
-    border: 2px solid $primary;
-    color: $primary;
-    font-size: 18px;
+    transition: 0s;
+    border-color: $primary;
+    background: $primary;
+    color: #fff;
   }
 }
 .title {

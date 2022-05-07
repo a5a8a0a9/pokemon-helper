@@ -10,5 +10,9 @@ export const list = [
   {
     id: 'clock',
     name: 'Clock'
+  },
+  {
+    id: 'tab',
+    name: 'Tab'
   }
 ]
