@@ -14,5 +14,9 @@ export const list = [
   {
     id: 'tab',
     name: 'Tab'
+  },
+  {
+    id: 'ripple-button',
+    name: 'Ripple Button'
   }
 ]

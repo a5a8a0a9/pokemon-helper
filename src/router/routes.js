@@ -33,16 +33,6 @@ export const routes = [
     component: () => import('@/pages/ComponentLibrary')
   },
   {
-    path: '/comic',
-    name: '漫畫',
-    meta: {
-      id: 'comic',
-      icon: ['fas', 'book'],
-      iconType: 'fa'
-    },
-    component: () => import('@/pages/Comic')
-  },
-  {
     path: '/calculator',
     name: '計算機',
     meta: {

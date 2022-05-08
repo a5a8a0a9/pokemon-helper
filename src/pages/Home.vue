@@ -4,7 +4,7 @@
       <div class="simple-container">
         <div class="glass-card">
           <div class="glass-card-header">
-            <span>head</span>
+            <span>首頁</span>
           </div>
           <div class="glass-card-body">
             <p>
@@ -65,9 +65,6 @@ export default {
     align-items: center;
     justify-content: center;
     width: 100%;
-    // display: grid;
-    // grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    // gap: 16px;
   }
 }
 
@@ -77,7 +74,6 @@ export default {
   flex-direction: column;
   gap: 8px;
   overflow: hidden;
-  // width: fit-content;
   width: 350px;
   height: fit-content;
   padding: 16px;
@@ -94,7 +90,6 @@ export default {
     font-weight: 600;
   }
   &-body {
-    // text-align: justify;
     letter-spacing: 1px;
   }
 }
