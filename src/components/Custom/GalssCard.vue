@@ -1,19 +1,17 @@
 <template>
-  <div class="page-card">
-    <div class="simple-wrapper">
-      <div class="simple-container">
-        <div class="glass-card">
-          <div class="glass-card-header">
-            <span>首頁</span>
-          </div>
-          <div class="glass-card-body">
-            <p>
-              做個奶子吧 Lorem ipsum dolor, sit amet consectetur adipisicing
-              elit. Autem dignissimos totam voluptas rerum. Veritatis sit porro
-              explicabo, vitae nesciunt illum libero, nam temporibus optio
-              asperiores dolores nisi, praesentium harum doloremque?
-            </p>
-          </div>
+  <div class="simple-wrapper">
+    <div class="simple-container">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <span>首頁</span>
+        </div>
+        <div class="glass-card-body">
+          <p>
+            做個奶子吧 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+            Autem dignissimos totam voluptas rerum. Veritatis sit porro
+            explicabo, vitae nesciunt illum libero, nam temporibus optio
+            asperiores dolores nisi, praesentium harum doloremque?
+          </p>
         </div>
       </div>
     </div>

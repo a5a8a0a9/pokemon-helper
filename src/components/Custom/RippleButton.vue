@@ -1,5 +1,5 @@
 <template>
-  <button ref="btn" class="btn" @click="onClick" @mousemove="onMouseMove">
+  <button ref="btn" class="btn" @mousemove="onMouseMove">
     <span class="btn-text">BUTTON</span>
   </button>
 </template>
@@ -10,16 +10,13 @@ export default {
     return {}
   },
   methods: {
-    onMouseMove(el) {
+    onMouseMove(event) {
       let btnEl = this.$refs.btn
-      const x = el.pageX - btnEl.offsetLeft
-      const y = el.pageY - btnEl.offsetTop
+      const x = event.pageX - btnEl.offsetLeft
+      const y = event.pageY - btnEl.offsetTop
 
       btnEl.style.setProperty('--rippleX', `${x}px`)
       btnEl.style.setProperty('--rippleY', `${y}px`)
-    },
-    onClick() {
-      console.log('text')
     }
   }
 }

@@ -1,7 +1,13 @@
+$primary: #42b983;
+
 * {
   box-sizing: border-box;
   margin: unset;
   padding: unset;
+  &::selection {
+    background: $primary;
+    color: #fff;
+  }
 }
 
 html,

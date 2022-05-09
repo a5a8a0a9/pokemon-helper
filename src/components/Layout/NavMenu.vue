@@ -130,7 +130,7 @@ $primary: #42b983;
 
     &-item-container {
       height: 40px;
-      padding: 8px 12px;
+      padding: 9px;
       display: flex;
       align-items: center;
       border: 1px solid #ddd;
@@ -156,6 +156,11 @@ $primary: #42b983;
 
       &-icon {
         transition: 0.5s;
+        transition: 0.5s;
+        width: 20px;
+        height: 20px;
+        display: grid;
+        place-items: center;
       }
 
       &-title {
