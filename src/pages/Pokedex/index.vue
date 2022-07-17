@@ -21,12 +21,12 @@
       <div class="flex-row items-end content-between u-ga-lg">
         <div class="flex-row u-ga-lg">
           <div>
-            <label>名稱</label>
-            <input v-model="filter.name" />
-          </div>
-          <div>
             <label>編號</label>
             <input v-model="filter.no" />
+          </div>
+          <div>
+            <label>名稱</label>
+            <input v-model="filter.name" />
           </div>
           <div>
             <label>首字筆劃</label>
