@@ -40,8 +40,12 @@
                   {{ option.name }}
                 </option>
               </select>
-              <span class="btn btn-gray" style="border-left: unset; border-radius: 0 3px 3px 0">
-                <font-awesome-icon :icon="['fas', 'times']" @click="filter.count = null" />
+              <span
+                class="btn btn-gray"
+                style="border-left: unset; border-radius: 0 3px 3px 0"
+                @click="filter.count = null"
+              >
+                <font-awesome-icon :icon="['fas', 'times']" />
               </span>
             </div>
           </div>
