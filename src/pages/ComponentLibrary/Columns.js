@@ -18,5 +18,9 @@ export const list = [
   {
     id: 'ripple-button',
     name: 'Ripple Button'
-  }
+  },
+  {
+    id: 'vertical-slide-show',
+    name: 'Vertical Slide Show'
+  },
 ]

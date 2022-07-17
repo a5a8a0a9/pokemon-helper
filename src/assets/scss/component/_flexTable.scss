@@ -1,0 +1,74 @@
+.flex-table {
+  position: relative;
+  display: grid;
+  overflow: auto;
+  grid-template-rows: max-content 1fr;
+  border: 1px solid #ddd;
+  border-radius: 0.325rem;
+
+  &-header {
+    z-index: 2;
+    position: sticky;
+    top: 0px;
+    background: #fff;
+    font-weight: 700;
+  }
+  &-header,
+  &-row {
+    min-width: fit-content;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid #ddd;
+  }
+  &-header > &-column {
+    padding: 6px 4px;
+  }
+  &-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    min-width: fit-content;
+    width: 100%;
+  }
+  &-column {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    word-break: break-all;
+
+    &.fix {
+      &-left, &-right {
+        position: sticky;
+        justify-content: center;
+        border-left: 1px solid #ddd;
+        flex-shrink: 0;
+      }
+      &-left {
+        left: 0px;
+        background: inherit;
+      }
+      &-right {
+        margin-left: auto;
+        right: 0px;
+        background: #fff;
+      }
+    }
+    & > a {
+      cursor: pointer;
+    }
+  }
+
+  &.stripe &-row {
+    background: #fff;
+    &:nth-child(odd) {
+      background: #eee;
+    }
+  }
+  &.hover-effect &-row {
+    &:hover {
+      background: #eff1ff;
+    }
+  }
+}

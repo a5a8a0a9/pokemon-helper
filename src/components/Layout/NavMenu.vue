@@ -75,11 +75,14 @@ export default {
 $primary: #42b983;
 
 .nav-menu {
-  width: 56px;
+  width: calc(56px + 7px);
   transition: 0.5s;
 
   &.active {
-    width: 350px;
+    width: calc(350px + 7px);
+    .nav-menu-list-item-container {
+      width: 100%;
+    }
   }
 
   &-toggle {
@@ -124,8 +127,10 @@ $primary: #42b983;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    height: 100%;
     padding: 8px;
+    height: calc(100% - 50px);
+    overflow-x: hidden;
+    overflow-y: auto;
     transition: 0.5s;
 
     &-item-container {
@@ -137,6 +142,8 @@ $primary: #42b983;
       border-radius: 20px;
       cursor: pointer;
       z-index: 1;
+      width: 40px;
+      transition: 0.5s;
 
       &:hover,
       &.router-link-exact-active {
