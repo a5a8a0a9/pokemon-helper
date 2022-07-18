@@ -7,7 +7,7 @@
         :key="index"
         :ref="`tab_${item.id}`"
         class="tab"
-        :class="{ active: activeId === item.id }"
+        :class="{ active: value === item.id }"
         @click.stop="changeTab(item)"
       >
         {{ item.name }}
@@ -18,33 +18,44 @@
 
 <script>
 export default {
+  props: {
+    value: {
+      type: [Number, String]
+    },
+    list: {
+      type: [Array, Object]
+    }
+  },
   data() {
-    return {
-      activeId: null,
-      list: [
-        { id: 1, name: 'Home' },
-        { id: 2, name: 'About' },
-        { id: 3, name: 'Setting' },
-        { id: 4, name: 'Image' }
-      ]
+    return {}
+  },
+  computed: {
+    activeId: {
+      set(newVal) {
+        this.$emit('input', newVal)
+      },
+      get() {
+        return this.value
+      }
     }
   },
   watch: {
-    activeId() {
-      const [activeEl] = this.$refs[`tab_${this.activeId}`]
-      let markerEl = this.$refs.marker
+    value: {
+      immediate: true,
+      handler: async function () {
+        await this.$nextTick()
+        const [activeEl = {}] = this.$refs[`tab_${this.value}`]
+        let markerEl = this.$refs.marker
 
-      markerEl.style.left = `${activeEl.offsetLeft}px`
-      markerEl.style.width = `${activeEl.offsetWidth}px`
+        markerEl.style.left = `${activeEl.offsetLeft}px`
+        markerEl.style.width = `${activeEl.offsetWidth}px`
+      }
     }
   },
   methods: {
     changeTab(item) {
       this.activeId = item.id
     }
-  },
-  created() {
-    this.activeId = 1
   }
 }
 </script>

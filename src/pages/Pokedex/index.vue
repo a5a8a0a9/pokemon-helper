@@ -1,6 +1,7 @@
 <template>
   <div class="page-card">
     <div class="flex-column u-ga-md" style="position: relative; height: 100%">
+      <tab v-model="activeTab" :list="tabList" />
       <!-- <div class="flex-row content-end u-ga-md">
         <span v-if="!isEdit" class="btn btn-info" @click="isEdit = true">
           <font-awesome-icon :icon="['fas', 'edit']" />
@@ -58,7 +59,11 @@
         </span>
       </div>
 
-      <div class="flex-table stripe hover-effect" style="height: 100%">
+      <div
+        v-if="activeTab === 'table'"
+        class="flex-table stripe hover-effect"
+        style="height: 100%"
+      >
         <div class="flex-table-header">
           <div class="flex-table-column" style="width: 80px">編號</div>
           <div class="flex-table-column" style="width: 100px">名稱</div>
@@ -95,6 +100,74 @@
           </div>
         </div>
       </div>
+
+      <div
+        v-if="activeTab === 'group'"
+        class="h-100"
+        style="border: 1px solid #ddd; overflow: auto"
+      >
+        <div
+          v-for="(groupInfo, groupIndex) in countGroupList"
+          :key="groupIndex"
+          class="flex-column u-ga-md"
+        >
+          <div
+            class="u-pa-md"
+            style="
+              border-bottom: 1px solid #ddd;
+              position: sticky;
+              top: 0;
+              background: #eff1ff;
+              z-index: 3;
+              font-weight: 600;
+            "
+          >
+            {{ `${groupInfo.count} 劃` }}
+          </div>
+          <div class="u-pa-md" style="border-bottom: 1px solid #ddd">
+            <div class="flex-table stripe hover-effect">
+              <div class="flex-table-header">
+                <div class="flex-table-column" style="width: 80px">編號</div>
+                <div class="flex-table-column" style="width: 100px">名稱</div>
+                <div class="flex-table-column text-right" style="width: 100px">
+                  首字筆劃
+                </div>
+              </div>
+              <div class="flex-table-body">
+                <div
+                  v-for="(item, index) in groupInfo.list"
+                  :key="index"
+                  class="flex-table-row"
+                >
+                  <div class="flex-table-column" style="width: 80px">
+                    {{ item.no }}
+                  </div>
+                  <div class="flex-table-column" style="width: 100px">
+                    <span v-if="!isEdit">{{ item.name }}</span>
+                    <input
+                      v-else
+                      v-model="item.name"
+                      :name="`list[${index}][${item.name}]`"
+                    />
+                  </div>
+                  <div
+                    class="flex-table-column text-right"
+                    style="width: 100px"
+                  >
+                    <span v-if="!isEdit">{{ item.count }}</span>
+                    <input
+                      v-else
+                      v-model="item.count"
+                      :name="`list[${index}][${item.count}]`"
+                      class="text-right"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -102,9 +175,25 @@
 <script>
 import { countMapping, countOptions } from './Columns'
 import DefaultData from './DefaultData.json'
+import Tab from '@/components/Custom/Tab.vue'
+
 export default {
+  components: {
+    Tab
+  },
   data() {
     return {
+      activeTab: 'table',
+      tabList: {
+        table: {
+          id: 'table',
+          name: '表格'
+        },
+        group: {
+          id: 'group',
+          name: '首字筆劃分群'
+        }
+      },
       countOptions,
       isEdit: false,
       list: [],
@@ -116,6 +205,21 @@ export default {
       showList: []
     }
   },
+  computed: {
+    countGroupList() {
+      let obj = {}
+      this.showList.forEach((item) => {
+        if (!obj[item.count]) {
+          obj[item.count] = {
+            count: item.count,
+            list: []
+          }
+        }
+        obj[item.count].list.push(item)
+      })
+      return obj
+    }
+  },
   watch: {
     filter: {
       deep: true,
@@ -125,7 +229,24 @@ export default {
     }
   },
   methods: {
-    pokemonGen({ no = '', name = '', count = 0 } = {}) {
+    async getData() {
+      for (let i = 0; i < DefaultData.length; i++) {
+        const item = await this.pokemonContructor(DefaultData[i])
+        this.list.push(item)
+      }
+
+      this.list.forEach((item) => {
+        const firstName = item.name[0]
+        const count = countMapping.find(({ list }) => {
+          return list.includes(firstName)
+        })?.count
+        if (!count) return
+
+        item.count = count
+      })
+      this.showList = [...this.list]
+    },
+    async pokemonContructor({ no = '', name = '', count = 0 } = {}) {
       const data = { no, name, count }
       const proxied = new Proxy(data, {
         set(obj, key, value) {
@@ -140,7 +261,7 @@ export default {
           return true
         }
       })
-      this.list.push(proxied)
+      return proxied
     },
     search() {
       this.showList.splice(0)
@@ -163,27 +284,12 @@ export default {
       this.isEdit = false
     }
   },
-  created() {
+  async created() {
     const response = JSON.parse(localStorage?.['pokedex'] ?? '[]')
-    if (response?.length <= 0) {
-      for (let i = 0; i < DefaultData.length; i++) {
-        DefaultData[i]
-        this.pokemonGen(DefaultData[i])
-      }
-
-      this.list.forEach((item) => {
-        const firstName = item.name[0]
-        const count = countMapping.find(({ list }) => list.includes(firstName))?.count
-        if (!count) return
-        item.count = count
-      })
-      this.save()
-    } else {
-      response.forEach((item) => {
-        this.pokemonGen(item)
-      })
+    if (response?.length > 0) {
+      localStorage.removeItem('pokedex')
     }
-    this.showList = [...this.list]
+    await this.getData()
   }
 }
 </script>
