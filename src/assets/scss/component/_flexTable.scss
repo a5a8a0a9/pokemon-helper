@@ -39,7 +39,8 @@
     word-break: break-all;
 
     &.fix {
-      &-left, &-right {
+      &-left,
+      &-right {
         position: sticky;
         justify-content: center;
         border-left: 1px solid #ddd;
@@ -63,7 +64,7 @@
   &.stripe &-row {
     background: #fff;
     &:nth-child(odd) {
-      background: #eee;
+      background: #fafafa;
     }
   }
   &.hover-effect &-row {

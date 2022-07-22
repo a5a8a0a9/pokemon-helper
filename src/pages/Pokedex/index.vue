@@ -1,7 +1,7 @@
 <template>
   <div class="page-card">
     <div class="flex-column u-ga-md" style="position: relative; height: 100%">
-      <tab v-model="activeTab" :list="tabList" />
+      <custom-tab v-model="activeTab" :list="tabList" />
       <!-- <div class="flex-row content-end u-ga-md">
         <span v-if="!isEdit" class="btn btn-info" @click="isEdit = true">
           <font-awesome-icon :icon="['fas', 'edit']" />
@@ -175,11 +175,11 @@
 <script>
 import { countMapping, countOptions } from './Columns'
 import DefaultData from './DefaultData.json'
-import Tab from '@/components/Custom/Tab.vue'
+import CustomTab from '@/components/Custom/CustomTab.vue'
 
 export default {
   components: {
-    Tab
+    CustomTab
   },
   data() {
     return {

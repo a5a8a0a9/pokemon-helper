@@ -18,6 +18,7 @@
 
 <script>
 export default {
+  name: 'custom-tab',
   props: {
     value: {
       type: [Number, String]
