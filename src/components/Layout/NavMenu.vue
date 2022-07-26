@@ -186,4 +186,9 @@ $primary: #42b983;
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+}
 </style>

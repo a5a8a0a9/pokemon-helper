@@ -1,98 +1,40 @@
-export const countMapping = [
-  {
-    count: 2,
-    list: ['九']
-  },
-  {
-    count: 3,
-    list: ['三', '千', '叉', '土', '大', '小']
-  },
-  {
-    count: 4,
-    list: ['不', '六', '天', '太', '月', '木', '毛', '水', '火']
-  },
-  {
-    count: 5,
-    list: ['仙', '卡', '可', '巨', '未', '由', '甲', '皮']
-  },
-  {
-    count: 6,
-    list: ['伊', '冰', '吉', '多', '尖', '百', '自', '艾']
-  },
-  {
-    count: 7,
-    list: ['克', '利', '含', '彷', '投', '沙', '狃']
-  },
-  {
-    count: 8,
-    list: ['亞', '刺', '坦', '夜', '奇', '姆', '帕', '幸', '怪', '拉', '東', '河', '波', '泥', '泳', '狙', '花', '長', '阿', '青']
-  },
-  {
-    count: 9,
-    list: ['勇', '帝', '幽', '毒', '洛', '派', '狩', '盆', '盾', '胡', '音', '風', '飛']
-  },
-  {
-    count: 10,
-    list: ['倫', '哥', '席', '浮', '海', '烈', '烏', '索', '耿', '臭', '草', '鬼']
-  },
-  {
-    count: 11,
-    list: ['勒', '圈', '捲', '猛', '眷', '章', '紳', '野', '雪']
-  },
-  {
-    count: 12,
-    list: ['凱', '朝', '無', '結', '聒', '腕', '象', '超', '隆', '黑', '裙']
-  },
-  {
-    count: 13,
-    list: ['圓', '萬', '葉', '蜂', '詭', '路', '達', '鈴', '鉗', '雷', '電', '頑']
-  },
-  {
-    count: 14,
-    list: ['夢', '熊', '瑪', '蜻', '豪', '赫', '遠', '銅']
-  },
-  {
-    count: 15,
-    list: ['劈', '暴', '蔓', '魅']
-  },
-  {
-    count: 16,
-    list: ['戰', '樹', '獨', '螢', '隨', '霏', '霓', '頭', '鴨', '龍']
-  },
-  {
-    count: 17,
-    list: ['謝', '黏']
-  },
-  {
-    count: 18,
-    list: ['雙', '騎', '鯉']
-  },
-  {
-    count: 19,
-    list: ['羅', '鯰']
-  },
-  {
-    count: 20,
-    list: ['飄']
-  },
-  {
-    count: 21,
-    list: ['櫻', '護', '鐵', '霹', '魔']
-  },
-  {
-    count: 23,
-    list: ['驚']
-  },
-  {
-    count: 24,
-    list: ['鑽']
-  }
-]
+import pokedex from '@/assets/json/pokedex.json'
+import CNS2unicode_2 from '@/assets/json/CNS2unicode_2.json'
+import CNS2unicode_15 from '@/assets/json/CNS2unicode_15.json'
+import CNS2unicode_BMP from '@/assets/json/CNS2unicode_BMP.json'
+import CNS_stroke from '@/assets/json/CNS_stroke.json'
 
-export const countOptions = countMapping.map(({ count }, index) => {
+let unicode2CNS = {}
+for (let CNS in CNS2unicode_2) {
+  const unicode = CNS2unicode_2[CNS]
+  unicode2CNS[unicode] = CNS
+}
+for (let CNS in CNS2unicode_15) {
+  const unicode = CNS2unicode_15[CNS]
+  unicode2CNS[unicode] = CNS
+}
+for (let CNS in CNS2unicode_BMP) {
+  const unicode = CNS2unicode_BMP[CNS]
+  unicode2CNS[unicode] = CNS
+}
+
+export { unicode2CNS, CNS_stroke }
+
+export const strokeMapping = pokedex.reduce((pVal, cVal) => {
+  if (!pVal[cVal.stroke]) {
+    pVal[cVal.stroke] = {
+      stroke: cVal.stroke,
+      list: []
+    }
+  }
+  pVal[cVal.stroke].list.push(cVal.name[0])
+  return pVal
+}, {})
+
+export const strokeOptions = Object.values(strokeMapping).map(({ stroke }) => {
   return {
-    id: index,
-    value: count,
-    name: `${count} 劃`
+    id: stroke,
+    value: stroke,
+    name: `${stroke} 劃`
   }
 })

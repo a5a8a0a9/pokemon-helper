@@ -19,8 +19,8 @@
         </template>
       </div> -->
 
-      <div class="flex-row items-end content-between u-ga-lg">
-        <div class="flex-row u-ga-lg">
+      <div class="flex-row items-end content-between u-ga-lg flex-wrap">
+        <div class="flex-row u-ga-lg flex-wrap">
           <div>
             <label>編號</label>
             <input v-model="filter.no" />
@@ -32,9 +32,12 @@
           <div>
             <label>首字筆劃</label>
             <div class="flex-row">
-              <select v-model="filter.count" style="border-radius: 3px 0 0 3px">
+              <select
+                v-model="filter.stroke"
+                style="border-radius: 3px 0 0 3px"
+              >
                 <option
-                  v-for="(option, optionIndex) in countOptions"
+                  v-for="(option, optionIndex) in strokeOptions"
                   :key="optionIndex"
                   :value="option.value"
                 >
@@ -44,7 +47,7 @@
               <span
                 class="btn btn-gray"
                 style="border-left: unset; border-radius: 0 3px 3px 0"
-                @click="filter.count = null"
+                @click="filter.stroke = null"
               >
                 <font-awesome-icon :icon="['fas', 'times']" />
               </span>
@@ -89,11 +92,11 @@
               />
             </div>
             <div class="flex-table-column text-right" style="width: 100px">
-              <span v-if="!isEdit">{{ item.count }}</span>
+              <span v-if="!isEdit">{{ item.stroke }}</span>
               <input
                 v-else
-                v-model="item.count"
-                :name="`list[${index}][${item.count}]`"
+                v-model="item.stroke"
+                :name="`list[${index}][${item.stroke}]`"
                 class="text-right"
               />
             </div>
@@ -107,7 +110,7 @@
         style="border: 1px solid #ddd; overflow: auto"
       >
         <div
-          v-for="(groupInfo, groupIndex) in countGroupList"
+          v-for="(groupInfo, groupIndex) in strokeGroupList"
           :key="groupIndex"
           class="flex-column u-ga-md"
         >
@@ -122,7 +125,7 @@
               font-weight: 600;
             "
           >
-            {{ `${groupInfo.count} 劃` }}
+            {{ `${groupInfo.stroke} 劃` }}
           </div>
           <div class="u-pa-md" style="border-bottom: 1px solid #ddd">
             <div class="flex-table stripe hover-effect">
@@ -154,11 +157,11 @@
                     class="flex-table-column text-right"
                     style="width: 100px"
                   >
-                    <span v-if="!isEdit">{{ item.count }}</span>
+                    <span v-if="!isEdit">{{ item.stroke }}</span>
                     <input
                       v-else
-                      v-model="item.count"
-                      :name="`list[${index}][${item.count}]`"
+                      v-model="item.stroke"
+                      :name="`list[${index}][${item.stroke}]`"
                       class="text-right"
                     />
                   </div>
@@ -173,8 +176,14 @@
 </template>
 
 <script>
-import { countMapping, countOptions } from './Columns'
-import DefaultData from './DefaultData.json'
+import * as CNS from '@lazy-cjk/cns-11643'
+import {
+  unicode2CNS,
+  CNS_stroke,
+  strokeOptions
+  // strokeMapping
+} from './Columns'
+import pokedex from '@/assets/json/pokedex.json'
 import CustomTab from '@/components/Custom/CustomTab.vue'
 
 export default {
@@ -194,28 +203,28 @@ export default {
           name: '首字筆劃分群'
         }
       },
-      countOptions,
+      strokeOptions,
       isEdit: false,
       list: [],
       filter: {
         name: '',
         no: '',
-        count: null
+        stroke: null
       },
       showList: []
     }
   },
   computed: {
-    countGroupList() {
+    strokeGroupList() {
       let obj = {}
       this.showList.forEach((item) => {
-        if (!obj[item.count]) {
-          obj[item.count] = {
-            count: item.count,
+        if (!obj[item.stroke]) {
+          obj[item.stroke] = {
+            stroke: item.stroke,
             list: []
           }
         }
-        obj[item.count].list.push(item)
+        obj[item.stroke].list.push(item)
       })
       return obj
     }
@@ -230,44 +239,25 @@ export default {
   },
   methods: {
     async getData() {
-      for (let i = 0; i < DefaultData.length; i++) {
-        const item = await this.pokemonContructor(DefaultData[i])
-        this.list.push(item)
+      for (let i = 0; i < pokedex.length; i++) {
+        const unicode = CNS.char2hex(pokedex[i].name[0]).toUpperCase()
+        const strCNS = unicode2CNS[unicode]
+        const cnsStroke = CNS_stroke[strCNS]
+        this.list.push({
+          name: pokedex[i].name,
+          no: pokedex[i].no,
+          stroke: pokedex[i].stroke > 0 ? pokedex[i].stroke : cnsStroke,
+          cnsStroke,
+          dataIndex: i
+        })
       }
-
-      this.list.forEach((item) => {
-        const firstName = item.name[0]
-        const count = countMapping.find(({ list }) => {
-          return list.includes(firstName)
-        })?.count
-        if (!count) return
-
-        item.count = count
-      })
       this.showList = [...this.list]
-    },
-    async pokemonContructor({ no = '', name = '', count = 0 } = {}) {
-      const data = { no, name, count }
-      const proxied = new Proxy(data, {
-        set(obj, key, value) {
-          switch (key) {
-            case 'count':
-              obj[key] = Number(value)
-              break
-            default:
-              obj[key] = value
-              break
-          }
-          return true
-        }
-      })
-      return proxied
     },
     search() {
       this.showList.splice(0)
       const res = this.list.filter((item) => {
         return (
-          (this.filter.count ? item.count === this.filter.count : true) &&
+          (this.filter.stroke ? item.stroke === this.filter.stroke : true) &&
           (this.filter.no ? item.no.includes(this.filter.no) : true) &&
           (this.filter.name ? item.name.includes(this.filter.name) : true)
         )
@@ -275,7 +265,7 @@ export default {
       this.showList.push(...res)
     },
     clearSearch() {
-      this.filter.count = null
+      this.filter.stroke = null
       this.filter.name = null
       this.filter.no = null
     },
@@ -285,11 +275,10 @@ export default {
     }
   },
   async created() {
-    const response = JSON.parse(localStorage?.['pokedex'] ?? '[]')
-    if (response?.length > 0) {
-      localStorage.removeItem('pokedex')
-    }
     await this.getData()
+    // const str = '我'
+    // console.log(CNS.char2hex(str)) // unicode
+    // CNS mapping unicode
   }
 }
 </script>
