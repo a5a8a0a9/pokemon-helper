@@ -66,7 +66,7 @@ export default {
 
 @media only screen and (max-width: 768px) {
   .page-wrapper {
-    height: calc(100% - 50px - var(--var-safe-area-inset-top));
+    height: calc(100% - 50px - 60px) !important;
   }
 }
 </style>
