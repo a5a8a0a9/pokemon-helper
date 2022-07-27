@@ -277,8 +277,7 @@ export default {
   async created() {
     await this.getData()
     // const str = '我'
-    // console.log(CNS.char2hex(str)) // unicode
-    // CNS mapping unicode
+    // const unicode = CNS.char2hex(str)
   }
 }
 </script>
