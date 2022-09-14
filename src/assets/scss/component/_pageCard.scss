@@ -3,8 +3,26 @@
   flex-direction: column;
   background: #fff;
   height: 100%;
-  padding: 16px;
-  overflow: auto;
+  // padding: 16px;
+  // overflow: auto;
+  overflow: hidden;
   border-radius: 5px;
   box-shadow: 5px 5px 5px #ddd, -5px -5px 5px #ddd;
+
+  &-header,
+  &-body {
+    padding: 16px;
+  }
+  &-bar {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  &-header {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &-body {
+    height: 100%;
+    overflow: auto;
+  }
 }

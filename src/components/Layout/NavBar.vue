@@ -12,6 +12,11 @@
       />
       <span>{{ $route.name }}</span>
     </div>
+    <div class="sub-menu-toggle">
+      <div @click="$emit('open-menu')">
+        <ion-icon name="finger-print-outline" />
+      </div>
+    </div>
   </div>
 </template>
 

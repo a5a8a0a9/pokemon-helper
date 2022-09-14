@@ -1,16 +1,19 @@
 .flex-table {
   position: relative;
   display: grid;
-  // overflow: auto;
-  overflow: hidden;
+  overflow: auto;
   grid-template-rows: max-content 1fr;
   border: 1px solid #ddd;
   border-radius: 0.325rem;
+  &.no-border {
+    border: none;
+  }
 
+  --flex-table-row-background: #fff;
   &-header {
-    z-index: 2;
+    z-index: 3;
     position: sticky;
-    top: 1px;
+    top: 0px;
     background: #fff;
     font-weight: 700;
   }
@@ -21,6 +24,110 @@
     display: flex;
     align-items: stretch;
     border-bottom: 1px solid #ddd;
+    &.no-border {
+      border: none;
+    }
+    // &:not(:last-child) {
+    //   border-bottom: 1px solid #ddd;
+    // }
+  }
+
+  counter-reset: flex-counter;
+  &-row {
+    counter-increment: flex-counter;
+  }
+  &-row.has-fix-right {
+    position: relative;
+  }
+  &-row.has-fix-right,
+  &-header.has-fix-right {
+    .flex-table-column:first-child {
+      margin-left: -10px;
+    }
+    &:before {
+      content: '';
+      position: sticky;
+      display: block;
+      left: calc(100% - var(--flex-table-fix-right-width, 0) - 5px);
+      top: 0;
+      bottom: 0;
+      overflow-y: hidden;
+      z-index: 1;
+      width: 10px;
+      background: linear-gradient(to right, #0000, #00000025 150%);
+      pointer-events: none;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      right: calc(var(--flex-table-fix-right-width, 0) - 10px);
+      top: 0;
+      bottom: 0;
+      overflow-y: hidden;
+      z-index: 1;
+      width: 20px;
+      background: linear-gradient(
+        to right,
+        #fff0,
+        var(--flex-table-row-background, white) 50%
+      );
+      pointer-events: none;
+    }
+  }
+
+  &-row.clickable {
+    cursor: pointer;
+    background: #fff;
+    --flex-table-row-background: #fff;
+    .flex-table-column {
+      background: inherit;
+    }
+    &:hover {
+      background: #eff1ff !important;
+      --flex-table-row-background: #eff1ff;
+    }
+  }
+  &-row.hover-effect {
+    background: #fff;
+    --flex-table-row-background: #fff;
+    .flex-table-column {
+      background: inherit;
+    }
+    &:hover {
+      background: #eff1ff !important;
+      --flex-table-row-background: #eff1ff;
+    }
+  }
+  &-row.form-type {
+    & > .flex-table-column {
+      justify-content: flex-start;
+    }
+  }
+  &-row.selected {
+    background: #3175af !important;
+    color: #fcfcfc !important;
+    &:hover {
+      background: #3782c3 !important;
+    }
+  }
+  &-row.batch-action-container {
+    background: #194f7d !important;
+    position: sticky;
+    top: 34px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #fff !important;
+    z-index: 2;
+
+    .batch-action-btn {
+      background: #7595a5;
+      color: #fff;
+      font-weight: 400;
+      border-radius: 0.5rem;
+      width: calc(4em + 28px);
+    }
   }
   &-header > &-column {
     padding: 6px 4px;
@@ -31,47 +138,64 @@
     justify-content: stretch;
     min-width: fit-content;
     width: 100%;
-    overflow: auto;
+  }
+
+  &-header &-column.border {
+    border-right: 1px solid #0000000d;
+  }
+  &-body &-column.border {
+    border-right: 1px solid #0000000d;
   }
   &-column {
     padding: 4px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     word-break: break-all;
+    justify-content: center;
+    flex-direction: column;
 
     &.fix {
       &-left,
       &-right {
         position: sticky;
         justify-content: center;
-        border-left: 1px solid #ddd;
+        align-items: center;
         flex-shrink: 0;
+        z-index: 2;
       }
       &-left {
         left: 0px;
-        background: inherit;
+        background: var(--flex-table-row-background, inherit);
+        border-right: 1px solid #ddd;
+      }
+      &-left.no-border {
+        border-right: none;
       }
       &-right {
         margin-left: auto;
+        right: -1px;
+        background: var(--flex-table-row-background, #fff);
+        border-left: 1px solid #ddd;
+      }
+      &-right.no-border {
         right: 0px;
-        background: #fff;
+        border-right: none;
       }
     }
-    & > a {
-      cursor: pointer;
+    &.action {
+      width: 50px;
     }
   }
-
-  &.stripe &-row {
-    background: #fff;
+  &.stripe > &-body > &-row {
     &:nth-child(odd) {
-      background: #fafafa;
+      background: #eee;
+      --flex-table-row-background: #eee;
     }
-  }
-  &.hover-effect &-row {
-    &:hover {
-      background: #eff1ff;
+    &:nth-child(even) {
+      background: #fff;
+      --flex-table-row-background: #fff;
+    }
+    .flex-table-column {
+      background: inherit;
     }
   }
 }

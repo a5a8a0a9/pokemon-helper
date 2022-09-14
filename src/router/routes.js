@@ -1,5 +1,6 @@
 const routesList = [
   {
+    show: true,
     active: true,
     path: '/',
     name: '首頁',
@@ -11,7 +12,8 @@ const routesList = [
     component: () => import('@/pages/Home')
   },
   {
-    active: true,
+    show: false,
+    active: false,
     path: '/about',
     name: '關於這個地方',
     meta: {
@@ -25,6 +27,7 @@ const routesList = [
     component: () => import(/* webpackChunkName: "about" */ '@/pages/About')
   },
   {
+    show: false,
     active: false,
     path: '/component-library',
     name: '元件館',
@@ -36,6 +39,7 @@ const routesList = [
     component: () => import('@/pages/ComponentLibrary')
   },
   {
+    show: false,
     active: false,
     path: '/calculator',
     name: '計算機',
@@ -47,6 +51,7 @@ const routesList = [
     component: () => import('@/pages/Calculator')
   },
   {
+    show: false,
     active: false,
     path: '/lab',
     name: '實驗室',
@@ -58,15 +63,28 @@ const routesList = [
     component: () => import('@/pages/Lab')
   },
   {
+    show: true,
     active: true,
     path: '/pokedex',
-    name: '寶可夢-洗翠圖鑑',
+    name: '寶可夢-圖鑑',
     meta: {
       id: 'lab',
       icon: ['fas', 'book'],
       iconType: 'fa'
     },
     component: () => import('@/pages/Pokedex')
+  },
+  {
+    show: false,
+    active: true,
+    path: '*',
+    name: '404',
+    meta: {
+      id: 'lab',
+      icon: ['fas', 'question'],
+      iconType: 'fa'
+    },
+    component: () => import('@/pages/NotFoundPage.vue')
   }
 ]
 export const routes = routesList.filter(({ active }) => active)

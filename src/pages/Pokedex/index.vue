@@ -1,36 +1,52 @@
 <template>
   <div class="page-card">
-    <div class="flex-column u-ga-md" style="position: relative; height: 100%">
-      <custom-tab v-model="activeTab" :list="tabList" />
-      <!-- <div class="flex-row content-end u-ga-md">
-        <span v-if="!isEdit" class="btn btn-info" @click="isEdit = true">
-          <font-awesome-icon :icon="['fas', 'edit']" />
-          <span>編輯</span>
+    <div class="page-card-bar">
+      <div class="flex-row content-between">
+        <custom-tab v-model="activeTab" :list="tabList" />
+        <div>
+          <span class="btn btn-gray" @click="isFilterOpen = !isFilterOpen">
+            <font-awesome-icon
+              :icon="isFilterOpen ? ['fas', 'angle-up'] : ['fas', 'angle-down']"
+            />
+            <span>{{ isFilterOpen ? '隱藏篩選' : '打開篩選' }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="flex-row content-end u-ga-md">
+      <span v-if="!isEdit" class="btn btn-info" @click="isEdit = true">
+        <font-awesome-icon :icon="['fas', 'edit']" />
+        <span>編輯</span>
+      </span>
+      <template v-else>
+        <span class="btn btn-default" @click="isEdit = false">
+          <font-awesome-icon :icon="['fas', 'times']" />
+          <span>取消</span>
         </span>
-        <template v-else>
-          <span class="btn btn-default" @click="isEdit = false">
-            <font-awesome-icon :icon="['fas', 'times']" />
-            <span>取消</span>
-          </span>
-          <span class="btn btn-primary" @click="save()">
-            <font-awesome-icon :icon="['fas', 'save']" />
-            <span>儲存</span>
-          </span>
-        </template>
-      </div> -->
+        <span class="btn btn-primary" @click="save()">
+          <font-awesome-icon :icon="['fas', 'save']" />
+          <span>儲存</span>
+        </span>
+      </template>
+    </div> -->
 
-      <div class="flex-row items-end content-between u-ga-lg flex-wrap">
-        <div class="flex-row u-ga-lg flex-wrap">
-          <div>
-            <label>編號</label>
+    <div class="page-card-header">
+      <div
+        class="filter-layout"
+        :class="{ active: isFilterOpen }"
+        style="margin-bottom: 8px"
+      >
+        <div class="flex-row u-ga-md flex-wrap">
+          <div class="flex-row u-ga-md">
+            <label style="flex: 0 0 auto">編號</label>
             <input v-model="filter.no" />
           </div>
-          <div>
-            <label>名稱</label>
+          <div class="flex-row u-ga-md">
+            <label style="flex: 0 0 auto">名稱</label>
             <input v-model="filter.name" />
           </div>
-          <div>
-            <label>首字筆劃</label>
+          <div class="flex-row u-ga-md">
+            <label style="flex: 0 0 auto">首字筆劃</label>
             <div class="flex-row">
               <select
                 v-model="filter.stroke"
@@ -54,25 +70,28 @@
             </div>
           </div>
         </div>
-        <span>
-          <span class="btn btn-danger" @click="clearSearch()">
-            <font-awesome-icon :icon="['fas', 'rotate-right']" />
-            <span>清除條件</span>
-          </span>
+      </div>
+      <div class="flex-row content-end u-ga-md" s>
+        <span class="btn btn-danger" @click="clearSearch()">
+          <font-awesome-icon :icon="['fas', 'rotate-right']" />
+          <span>清除條件</span>
         </span>
       </div>
+    </div>
 
+    <div class="page-card-body">
       <div
         v-if="activeTab === 'table'"
         class="flex-table stripe hover-effect"
         style="height: 100%"
       >
         <div class="flex-table-header">
-          <div class="flex-table-column" style="width: 80px">編號</div>
-          <div class="flex-table-column" style="width: 100px">名稱</div>
-          <div class="flex-table-column text-right" style="width: 100px">
+          <div class="flex-table-column" style="width: 3em">編號</div>
+          <div class="flex-table-column" style="width: 6em">名稱</div>
+          <div class="flex-table-column text-center" style="width: 5em">
             首字筆劃
           </div>
+          <div class="flex-table-column" style="width: 75px">圖片</div>
         </div>
         <div class="flex-table-body">
           <div
@@ -80,10 +99,10 @@
             :key="index"
             class="flex-table-row"
           >
-            <div class="flex-table-column" style="width: 80px">
-              {{ item.no }}
+            <div class="flex-table-column" style="width: 3em">
+              {{ item.no | formatNo }}
             </div>
-            <div class="flex-table-column" style="width: 100px">
+            <div class="flex-table-column" style="width: 6em">
               <span v-if="!isEdit">{{ item.name }}</span>
               <input
                 v-else
@@ -91,7 +110,7 @@
                 :name="`list[${index}][${item.name}]`"
               />
             </div>
-            <div class="flex-table-column text-right" style="width: 100px">
+            <div class="flex-table-column text-center" style="width: 5em">
               <span v-if="!isEdit">{{ item.stroke }}</span>
               <input
                 v-else
@@ -99,6 +118,14 @@
                 :name="`list[${index}][${item.stroke}]`"
                 class="text-right"
               />
+            </div>
+            <div class="flex-table-column" style="width: 75px">
+              <!-- <img
+                v-if="item.no < 899"
+                :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${Number(
+                  item.no
+                )}.png`"
+              /> -->
             </div>
           </div>
         </div>
@@ -130,11 +157,12 @@
           <div class="u-pa-md" style="border-bottom: 1px solid #ddd">
             <div class="flex-table stripe hover-effect">
               <div class="flex-table-header">
-                <div class="flex-table-column" style="width: 80px">編號</div>
-                <div class="flex-table-column" style="width: 100px">名稱</div>
-                <div class="flex-table-column text-right" style="width: 100px">
+                <div class="flex-table-column" style="width: 3em">編號</div>
+                <div class="flex-table-column" style="width: 6em">名稱</div>
+                <div class="flex-table-column text-center" style="width: 5em">
                   首字筆劃
                 </div>
+                <div class="flex-table-column" style="width: 75px">圖片</div>
               </div>
               <div class="flex-table-body">
                 <div
@@ -142,10 +170,10 @@
                   :key="index"
                   class="flex-table-row"
                 >
-                  <div class="flex-table-column" style="width: 80px">
-                    {{ item.no }}
+                  <div class="flex-table-column" style="width: 3em">
+                    {{ item.no | formatNo }}
                   </div>
-                  <div class="flex-table-column" style="width: 100px">
+                  <div class="flex-table-column" style="width: 6em">
                     <span v-if="!isEdit">{{ item.name }}</span>
                     <input
                       v-else
@@ -153,10 +181,7 @@
                       :name="`list[${index}][${item.name}]`"
                     />
                   </div>
-                  <div
-                    class="flex-table-column text-right"
-                    style="width: 100px"
-                  >
+                  <div class="flex-table-column text-center" style="width: 5em">
                     <span v-if="!isEdit">{{ item.stroke }}</span>
                     <input
                       v-else
@@ -165,6 +190,14 @@
                       class="text-right"
                     />
                   </div>
+                  <div class="flex-table-column" style="width: 75px">
+                    <!-- <img
+                      v-if="item.no < 899"
+                      :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${Number(
+                        item.no
+                      )}.png`"
+                    /> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,6 +205,8 @@
         </div>
       </div>
     </div>
+    <!-- <div class="flex-column u-ga-md" style="position: relative; height: 100%">
+    </div> -->
   </div>
 </template>
 
@@ -186,12 +221,22 @@ import {
 import pokedex from '@/assets/json/pokedex.json'
 import CustomTab from '@/components/Custom/CustomTab.vue'
 
+// https://pokeapi.co/api/v2/pokemon/ditto
+// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/898.png
+// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png
+
 export default {
   components: {
     CustomTab
   },
+  filters: {
+    formatNo(no) {
+      return no.toString().padStart(3, '0')
+    }
+  },
   data() {
     return {
+      isFilterOpen: true,
       activeTab: 'table',
       tabList: {
         table: {
@@ -208,7 +253,7 @@ export default {
       list: [],
       filter: {
         name: '',
-        no: '',
+        no: null,
         stroke: null
       },
       showList: []
@@ -258,7 +303,9 @@ export default {
       const res = this.list.filter((item) => {
         return (
           (this.filter.stroke ? item.stroke === this.filter.stroke : true) &&
-          (this.filter.no ? item.no.includes(this.filter.no) : true) &&
+          (this.filter.no
+            ? item.no.toString().padStart(3, '0').includes(this.filter.no)
+            : true) &&
           (this.filter.name ? item.name.includes(this.filter.name) : true)
         )
       })
@@ -301,9 +348,11 @@ select {
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   gap: 4px;
   align-items: center;
+  width: max-content;
+
   &-info {
     background: $info;
     color: #fff;
@@ -329,5 +378,25 @@ select {
     color: #444;
     border: 1px solid #ddd;
   }
+}
+
+.filter-layout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  height: max-content;
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.5s;
+  &.active {
+    max-height: 100%;
+  }
+}
+img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
 </style>

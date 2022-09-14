@@ -15,7 +15,7 @@
 
     <ul class="nav-menu-list" @click.stop="toggleMenu">
       <router-link
-        v-for="(route, index) in routes"
+        v-for="(route, index) in visibleRoutes"
         :key="index"
         :to="route.path"
         custom
@@ -61,6 +61,11 @@ export default {
     return {
       routes,
       isToggle: false
+    }
+  },
+  computed: {
+    visibleRoutes() {
+      return routes.filter(({ show }) => show)
     }
   },
   methods: {
