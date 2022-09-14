@@ -284,19 +284,25 @@ export default {
   },
   methods: {
     async getData() {
-      for (let i = 0; i < pokedex.length; i++) {
-        const unicode = CNS.char2hex(pokedex[i].name[0]).toUpperCase()
-        const strCNS = unicode2CNS[unicode]
-        const cnsStroke = CNS_stroke[strCNS]
-        this.list.push({
-          name: pokedex[i].name,
-          no: pokedex[i].no,
-          stroke: pokedex[i].stroke > 0 ? pokedex[i].stroke : cnsStroke,
-          cnsStroke,
-          dataIndex: i
+      try {
+        this.loaing = true
+        pokedex.forEach((pokemon, idx) => {
+          const unicode = CNS.char2hex(pokemon.name[0]).toUpperCase()
+          const strCNS = unicode2CNS[unicode]
+          const cnsStroke = CNS_stroke[strCNS]
+          this.list.push({
+            ...pokemon,
+            stroke: pokemon.stroke > 0 ? pokemon.stroke : cnsStroke,
+            cnsStroke,
+            dataIndex: idx
+          })
         })
+        this.showList = [...this.list]
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.loaing = false
       }
-      this.showList = [...this.list]
     },
     search() {
       this.showList.splice(0)
