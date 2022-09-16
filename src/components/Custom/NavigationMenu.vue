@@ -40,8 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$dark: #222327;
-
 .simple-wrapper {
   background: $dark;
   height: 250px;

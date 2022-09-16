@@ -64,8 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
-
 .cls-btn {
   background: #fff;
   color: $primary;

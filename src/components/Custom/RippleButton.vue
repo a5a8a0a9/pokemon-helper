@@ -23,7 +23,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
 .btn {
   position: relative;
   display: inline-flex;

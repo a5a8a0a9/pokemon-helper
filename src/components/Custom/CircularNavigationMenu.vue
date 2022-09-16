@@ -48,8 +48,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$dark: #222237;
-
 .simple-wrapper {
   display: flex;
   align-items: center;
