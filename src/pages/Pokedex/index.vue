@@ -348,6 +348,7 @@ select {
     outline: 1px solid $primary;
   }
 }
+
 .btn {
   padding: 4px 8px;
   border-radius: 4px;
