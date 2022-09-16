@@ -62,8 +62,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
-
 .simple-wrapper {
   width: 100%;
   cursor: pointer;

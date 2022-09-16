@@ -337,9 +337,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
-$info: #3175af;
-$danger: #ed2e2e;
 input,
 select {
   background: #fff;

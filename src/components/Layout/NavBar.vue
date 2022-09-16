@@ -29,7 +29,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
 .nav-bar {
   height: 50px;
   padding: 8px 16px;

@@ -77,8 +77,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #42b983;
-
 .nav-menu {
   width: calc(56px + 7px);
   transition: 0.5s;
