@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/peko/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/pokemon-helper/' : '/',
 
   devServer: {
     host: 'localhost',
