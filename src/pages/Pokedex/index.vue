@@ -236,7 +236,6 @@ export default {
   },
   data() {
     return {
-      /** branch test */
       isFilterOpen: true,
       activeTab: 'table',
       tabList: {
