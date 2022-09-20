@@ -40,4 +40,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Link
 
-https://a5a8a0a9.github.io/pokemon-helper/#/
+https://a5a8a0a9.github.io/pokemon-helper/#/pokedex
